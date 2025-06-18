@@ -20,26 +20,31 @@ export const INITIAL_PAGES: Page[] = [
 
 export const CONTEXT_MENU_ITEMS = [
   {
+    id: "setFirstPage",
     label: "Set as first page",
     icon: BiSolidFlag,
     iconClassName: "fill-primary-blue stroke-primary-blue",
   },
   {
+    id: "rename",
     label: "Rename",
     icon: BiPencil,
     iconClassName: "fill-primary-icons",
   },
   {
+    id: "copy",
     label: "Copy",
     icon: BiClipboard,
     iconClassName: "fill-primary-icons",
   },
   {
+    id: "duplicate",
     label: "Duplicate",
     icon: BiCopy,
     iconClassName: "text-primary-icons",
   },
   {
+    id: "delete",
     label: "Delete",
     icon: BiTrash,
     className:

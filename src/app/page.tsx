@@ -1,14 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 
-import { INITIAL_PAGES } from "./constants";
 import SortablePageNodes from "./components/SortablePageNodes";
+import { useAppProvider } from "./providers/AppProvider";
 
 export default function Home() {
-  const [pages, setPages] = useState(INITIAL_PAGES);
-  const [activePageId, setActivePageId] = useState(1);
+  const { pages, activePageId, setPages, setActivePageId } = useAppProvider();
 
   return (
     <div className="flex flex-col justify-start sm:justify-center h-full">
@@ -16,9 +14,9 @@ export default function Home() {
         <h2 className="text-xl font-semibold mb-2">
           {pages.find((p) => p.id === activePageId)?.title}
         </h2>
-        
+
         <p>
-          Content for {pages.find((p) => p.id === activePageId)?.title} page.
+          Content for &quot;{pages.find((p) => p.id === activePageId)?.title}&quot; page.
         </p>
         <p>
           Made by Bruno Azzi.

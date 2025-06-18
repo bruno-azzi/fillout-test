@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { BiDotsVertical, BiFile } from "react-icons/bi";
 import { IconType } from "react-icons";
 
@@ -20,27 +20,10 @@ const PageButton: React.FC<Props> = ({
   icon: Icon = BiFile,
 }) => {
   const [open, setOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Node;
-      if (
-        !menuRef.current?.contains(target) &&
-        !buttonRef.current?.contains(target)
-      ) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   return (
-    <div className="relative">
+    <>
       <div
         tabIndex={id}
         onClick={() => onClick(id)}
@@ -71,8 +54,10 @@ const PageButton: React.FC<Props> = ({
         </button>
       </div>
 
-      {open && <ContextMenu />}
-    </div>
+      {open && (
+        <ContextMenu pageId={id} buttonRef={buttonRef} setOpen={setOpen} />
+      )}
+    </>
   );
 };
 

@@ -18,6 +18,7 @@ import { BiPlus } from "react-icons/bi";
 
 import PageNode from "./SortableItem";
 import { Page } from "../types";
+import { useAppProvider } from "../providers/AppProvider";
 
 type Props = {
   pages: Page[];
@@ -32,21 +33,11 @@ export const SortablePageNodes: React.FC<Props> = ({
   setActivePageId,
   activePageId,
 }) => {
+  const { handleAddPage } = useAppProvider();
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
-
-  const handleAddPage = (index: number) => {
-    const newPage = {
-      id: Date.now(),
-      title: `Page ${pages.length + 1}`,
-    };
-    const newPages = [...pages];
-    newPages.splice(index + 1, 0, newPage);
-    setPages(newPages);
-    setActivePageId(newPage.id);
-  };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
