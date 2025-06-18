@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useRef, useState } from "react";
-import { BiDotsVertical, BiFile } from "react-icons/bi";
+import { BiDotsHorizontalRounded , BiFile } from "react-icons/bi";
 import { IconType } from "react-icons";
 
 import ContextMenu from "./ContextMenu/ContextMenu";
@@ -50,7 +50,7 @@ const PageButton: React.FC<Props> = ({
           className={`${active ? "block" : "hidden"} ml-2 cursor-pointer`}
           onClick={() => setOpen((opened) => !opened)}
         >
-          <BiDotsVertical size={16} />
+          <BiDotsHorizontalRounded size={16} />
         </button>
       </div>
 

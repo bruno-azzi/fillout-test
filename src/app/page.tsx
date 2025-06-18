@@ -6,7 +6,10 @@ import SortablePageNodes from "./components/SortablePageNodes";
 import { useAppProvider } from "./providers/AppProvider";
 
 export default function Home() {
-  const { pages, activePageId, setPages, setActivePageId } = useAppProvider();
+  const { pages, activePageId, setPages, setActivePageId, loading } =
+    useAppProvider();
+
+  if (loading) return null;
 
   return (
     <div className="flex flex-col justify-start sm:justify-center h-full">
@@ -16,7 +19,8 @@ export default function Home() {
         </h2>
 
         <p>
-          Content for &quot;{pages.find((p) => p.id === activePageId)?.title}&quot; page.
+          Content for &quot;{pages.find((p) => p.id === activePageId)?.title}
+          &quot; page.
         </p>
         <p>
           Made by Bruno Azzi.

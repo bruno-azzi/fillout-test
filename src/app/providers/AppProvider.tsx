@@ -2,6 +2,7 @@
 
 import {
   useState,
+  useEffect,
   Dispatch,
   useContext,
   createContext,
@@ -11,13 +12,16 @@ import {
 import { INITIAL_PAGES } from "../constants";
 import { Page } from "../types";
 
+const defaultData = { pages: INITIAL_PAGES, activePageId: 1 };
+
 export const AppContext = createContext<AppProviderProps>({
-  pages: INITIAL_PAGES,
-  activePageId: 1,
+  pages: defaultData.pages,
+  activePageId: defaultData.activePageId,
   setPages: () => {},
   setActivePageId: () => {},
   deletePage: () => {},
   handleAddPage: () => {},
+  loading: true,
 });
 
 type AppProviderProps = {
@@ -26,17 +30,57 @@ type AppProviderProps = {
   setPages: Dispatch<SetStateAction<Page[]>>;
   setActivePageId: Dispatch<SetStateAction<number>>;
   deletePage: (pageId: number) => void;
-  handleAddPage: (pageId: number) => void;
+  handleAddPage: (index: number) => void;
+  loading: boolean;
 };
 
+const LOCAL_STORAGE_KEY = "appState";
+
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
-  const [pages, setPages] = useState(INITIAL_PAGES);
-  const [activePageId, setActivePageId] = useState(1);
+  const [pages, setPages] = useState<Page[]>(defaultData.pages);
+  const [activePageId, setActivePageId] = useState<number>(
+    defaultData.activePageId
+  );
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getAppState = (): { pages: Page[]; activePageId: number } => {
+      if (typeof window === "undefined") {
+        setLoading(false);
+        return defaultData;
+      }
+
+      const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+
+      if (stored) {
+        try {
+          return JSON.parse(stored);
+        } catch {
+          return defaultData;
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      setLoading(false);
+      return { pages: INITIAL_PAGES, activePageId: 1 };
+    };
+
+    const storedData = getAppState();
+
+    setPages(storedData.pages);
+    setActivePageId(storedData.activePageId);
+  }, []);
+
+  useEffect(() => {
+    const state = { pages, activePageId };
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state));
+  }, [pages, activePageId]);
 
   const handleAddPage = (index: number) => {
     const newPage = {
       id: Date.now(),
-      title: "Untitled",
+      title: `Page #${pages.length + 1}`,
     };
     const newPages = [...pages];
     newPages.splice(index + 1, 0, newPage);
@@ -45,8 +89,14 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const deletePage = (pageId: number) => {
-    setPages(pages.filter((currPage) => currPage.id !== pageId));
-    setActivePageId(pages[pages.length - 1].id);
+    const newPages = pages.filter((currPage) => currPage.id !== pageId);
+    setPages(newPages);
+
+    if (newPages.length > 0) {
+      setActivePageId(newPages[newPages.length - 1].id);
+    } else {
+      setActivePageId(0);
+    }
   };
 
   return (
@@ -58,6 +108,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         setActivePageId,
         handleAddPage,
         deletePage,
+        loading,
       }}
     >
       {children}
