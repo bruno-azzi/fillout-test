@@ -1,26 +1,74 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+  font-family: "BLMelody";
+  src: url("/fonts/BLMelody-Regular.woff2") format("woff2");
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  --font-secondary: "BLMelody";
+  --color-primary-text: #1a1a1a;
+  --color-primary-yellow: #f59e11;
+  --color-primary-blue: #2f72e2;
+  --color-primary-red: #ef494f;
+  --color-primary-dark-gray: #677289;
+  --color-primary-light-gray: rgba(157, 164, 178, 0.15);
+  --color-primary-light-gray-hover: rgba(157, 164, 178, 0.35);
+  --color-primary-lined-dots: #c0c0c0;
+  --color-primary-icons: #9da4b2;
+  --color-primary-borders: #e1e1e1;
+  --shadow-primary: 0px 1px 3px 0px rgba(0, 0, 0, 0.04),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.02);
+  --shadow-focused: 0px 1px 3px 0px rgba(0, 0, 0, 0.04),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.02),
+    0px 0px 0px 1.5px rgba(47, 114, 226, 0.25);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-primary);
+  font-weight: 500;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    margin-bottom: -10px;
+    opacity: 0;
+  }
+  to {
+    margin-bottom: 0;
+    opacity: 1;
+  }
+}
+
+.btn {
+  @apply flex items-center justify-center py-1.5 px-2.5 border text-sm rounded-lg transition-colors duration-200 cursor-pointer;
+}
+
+.dashed {
+  background-image: repeating-linear-gradient(
+    90deg,
+    #c0c0c0,
+    #c0c0c0 4px,
+    #0000 4px 6px
+  );
+  background-position: left -1px bottom;
+  background-repeat: repeat-x;
+  background-size: 800% 2px;
+}
+
+.fade-in {
+  animation: fadeIn 300ms ease;
+}
+
+.slide-in {
+  animation: slideIn 300ms ease;
 }
