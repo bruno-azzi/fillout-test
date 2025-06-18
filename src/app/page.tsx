@@ -16,6 +16,7 @@ export default function Home() {
         <h2 className="text-xl font-semibold mb-2">
           {pages.find((p) => p.id === activePageId)?.title}
         </h2>
+        
         <p>
           Content for {pages.find((p) => p.id === activePageId)?.title} page.
         </p>

@@ -1,10 +1,15 @@
-import { BiCheckCircle, BiFile, BiInfoCircle } from "react-icons/bi";
+import {
+  BiCheckCircle,
+  BiFile,
+  BiInfoCircle,
+  BiSolidFlag,
+  BiPencil,
+  BiClipboard,
+  BiCopy,
+  BiTrash,
+} from "react-icons/bi";
 
 import { Page } from "./types";
-import { FiFlag, FiTrash2 } from "react-icons/fi";
-import { LuPencilLine } from "react-icons/lu";
-import { GoPaste } from "react-icons/go";
-import { RxCopy } from "react-icons/rx";
 
 export const INITIAL_PAGES: Page[] = [
   { id: 1, title: "Info", icon: BiInfoCircle },
@@ -16,27 +21,27 @@ export const INITIAL_PAGES: Page[] = [
 export const CONTEXT_MENU_ITEMS = [
   {
     label: "Set as first page",
-    icon: FiFlag,
+    icon: BiSolidFlag,
     iconClassName: "fill-primary-blue stroke-primary-blue",
   },
   {
     label: "Rename",
-    icon: LuPencilLine,
-    iconClassName: "stroke-primary-icons",
+    icon: BiPencil,
+    iconClassName: "fill-primary-icons",
   },
   {
     label: "Copy",
-    icon: GoPaste,
+    icon: BiClipboard,
     iconClassName: "fill-primary-icons",
   },
   {
     label: "Duplicate",
-    icon: RxCopy,
-    iconClassName: "rotate-z-90 text-primary-icons",
+    icon: BiCopy,
+    iconClassName: "text-primary-icons",
   },
   {
     label: "Delete",
-    icon: FiTrash2,
+    icon: BiTrash,
     className:
       "stroke-primary-red text-primary-red mt-2 pt-3 border-t border-t-primary-borders",
   },
