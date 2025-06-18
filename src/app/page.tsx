@@ -1,98 +1,51 @@
 "use client";
 
 import { useState } from "react";
-import {
-  useSensor,
-  useSensors,
-  DndContext,
-  PointerSensor,
-  closestCenter,
-  DragEndEvent,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  rectSortingStrategy,
-} from "@dnd-kit/sortable";
-import { BiPlus } from "react-icons/bi";
+import Link from "next/link";
 
 import { INITIAL_PAGES } from "./constants";
-import SortableItem from "./components/SortableItem";
+import SortablePageNodes from "./components/SortablePageNodes";
 
 export default function Home() {
   const [pages, setPages] = useState(INITIAL_PAGES);
   const [activePageId, setActivePageId] = useState(1);
-  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
-  const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
-  );
-
-  const handleAddPage = (index: number) => {
-    const newPage = {
-      id: Date.now(),
-      title: `Page ${pages.length + 1}`,
-    };
-    const newPages = [...pages];
-    newPages.splice(index + 1, 0, newPage);
-    setPages(newPages);
-    setActivePageId(newPage.id);
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (active.id !== over?.id) {
-      setPages((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over?.id);
-        return arrayMove(items, oldIndex, newIndex);
-      });
-    }
-  };
 
   return (
-    <div className="flex flex-col justify-end h-full">
-      <div className="p-6 border rounded-lg bg-white shadow-md mb-6">
+    <div className="flex flex-col justify-start sm:justify-center h-full">
+      <div className="p-6 border border-primary-borders rounded-lg bg-white shadow-primary mb-6 h-60 sm:h-96 text-primary-text">
         <h2 className="text-xl font-semibold mb-2">
           {pages.find((p) => p.id === activePageId)?.title}
         </h2>
-        <p className="text-gray-600">
+        <p>
           Content for {pages.find((p) => p.id === activePageId)?.title} page.
+        </p>
+        <p>
+          Made by Bruno Azzi.
+          <br />
+          <Link
+            href="https://www.linkedin.com/in/brunoazzi/"
+            target="_blank"
+            className="text-primary-blue"
+          >
+            Linkedin
+          </Link>
+          &nbsp;|&nbsp;
+          <Link
+            href="https://github.com/bruno-azzi/fillout-test"
+            target="_blank"
+            className="text-primary-blue"
+          >
+            Github
+          </Link>
         </p>
       </div>
 
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-          <div className="flex flex-wrap gap-y-2 relative">
-        <SortableContext items={pages} strategy={rectSortingStrategy}>
-            {pages.map((page, index) => {
-              return (
-                <SortableItem
-                  key={page.id}
-                  page={page}
-                  index={index}
-                  active={activePageId === page.id}
-                  onClick={setActivePageId}
-                  setHoverIndex={setHoverIndex}
-                  handleAddPage={handleAddPage}
-                  showPlusBtn={hoverIndex === index && index < pages.length - 1}
-                />
-              );
-            })}
-
-            <button
-              onClick={() => handleAddPage(pages.length - 1)}
-              className="btn shadow-primary border-primary-borders hover:bg-primary-light-gray-hover cursor-pointer"
-            >
-              <BiPlus size={16} className="mr-1" />
-              <span>Add page</span>
-            </button>
-        </SortableContext>
-          </div>
-      </DndContext>
+      <SortablePageNodes
+        activePageId={activePageId}
+        pages={pages}
+        setActivePageId={setActivePageId}
+        setPages={setPages}
+      />
     </div>
   );
 }

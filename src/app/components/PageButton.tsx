@@ -35,6 +35,7 @@ const PageButton: React.FC<Props> = ({
     };
 
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
@@ -43,10 +44,10 @@ const PageButton: React.FC<Props> = ({
       <div
         tabIndex={id}
         onClick={() => onClick(id)}
-        className={`btn fade-in text-primary-dark-gray hover:bg-primary-light-gray-hover ${
+        className={`btn text-primary-dark-gray ${
           active
-            ? "bg-white border-primary-borders shadow-primary"
-            : "bg-primary-light-gray border-transparent"
+            ? "bg-white border-primary-borders shadow-primary hover:bg-primary-light-gray"
+            : "bg-primary-light-gray border-transparent hover:bg-primary-light-gray-hover"
         }`}
       >
         <Icon
